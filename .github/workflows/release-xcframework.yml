@@ -63,12 +63,16 @@ jobs:
 
       - name: Commit generated Swift bindings
         run: |
-          if git diff --quiet -- Sources/RgbLib/RgbLib.swift rgb-lib; then
+          git add Sources/RgbLib/RgbLib.swift rgb-lib
+
+          echo "Git status after generation:"
+          git status --short
+
+          if git diff --cached --quiet --exit-code; then
             echo "No generated source changes to commit"
             exit 0
           fi
 
-          git add Sources/RgbLib/RgbLib.swift rgb-lib
           git commit -m "Update generated Swift bindings for ${RELEASE_TAG}"
           git push origin "HEAD:${RELEASE_BRANCH}"
 
