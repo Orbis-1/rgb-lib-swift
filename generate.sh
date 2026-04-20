@@ -6,7 +6,11 @@ RGBLIBFFI_PATH="./rgb-lib/bindings/uniffi"
 MANIFEST_PATH=(--manifest-path "$RGBLIBFFI_PATH/Cargo.toml")
 XCFRAMEWORK_PATH="rgb_libFFI.xcframework"
 
-rm -rf "${XCFRAMEWORK_PATH:?}/*/"
+echo "Syncing and updating rgb-lib submodule..."
+git submodule sync --recursive
+git submodule update --init --remote --recursive
+
+rm -rf "${XCFRAMEWORK_PATH:?}"/*/
 
 # Use toolchain that supports edition 2024 (rgb-lib requires Rust 1.85+); nightly needed for -Z build-std on aarch64-apple-ios-sim
 TOOLCHAIN="nightly"
